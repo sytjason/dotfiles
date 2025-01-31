@@ -1,0 +1,4 @@
+#!/bin/bash
+xdg-open "$(rg --no-messages --files ~/ \
+    -g "!{*.srt,*.rar,*.zip,*.nfo}" | rofi -threads 0 \
+    -dmenu -sort -sorting-method fzf -i -p "xdg-open")"

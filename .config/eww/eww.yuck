@@ -1,0 +1,97 @@
+(defwidget bar []
+    (centerbox :orientation "h"
+        (workspaces)
+        (windows)
+        (sidestuff)
+    )
+)
+
+(defwindow bar
+    :monitor 0
+    :geometry (geometry :x "0%"
+                        :y "0%"
+                        :width "100%"
+                        :height "1.5%"
+                        :anchor "top center")
+    :exclusive true
+    (bar))
+
+
+(defwidget sidestuff []
+    (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+        (systray :spacing 1
+            :orientation "horizontal"
+            :icon-size 20
+        )
+        time
+    )
+)
+    ;; (metric :label "🔊"
+    ;;         :value volume
+    ;;         :onchange "amixer -D pulse sset Master {}%")
+    ;; (metric :label ""
+    ;;         :value {EWW_RAM.used_mem_perc}
+    ;;         :onchange "")
+    ;; (metric :label "💾"
+    ;;         :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+    ;;         :onchange "")
+    ;; time))
+
+(deflisten var_workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces.sh")
+(deflisten active_workspace :initial "0" "bash ~/.config/eww/scripts/get-active-workspace.sh")
+(deflisten special_workspace :initial "0" "bash ~/.config/eww/scripts/get-special-workspace.sh")
+(deflisten var_windows :initial "[]" "bash ~/.config/eww/scripts/get-windows.sh")
+(deflisten active_window :initial "null" "bash ~/.config/eww/scripts/get-active-window.sh")
+
+(defwidget workspaces []
+    (box :spacing 0
+        :orientation "horizontal"
+        :space-evenly false
+        (label :text "${var_workspaces}${active_workspace}${special_workspace}" :visible false)
+        (for workspace in var_workspaces
+            (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+                (box :visible "${(workspace.windows > 0 && workspace.id > 0) || workspace.id == active_workspace}"
+                    (label :limit-width 2
+                        :text "${workspace.id}"
+                        :class "workspace-entry ${workspace.id == active_workspace ? special_workspace != 0 ? "magic" : "active" : "inactive"}"
+                    )
+                )
+            )
+        )
+    )
+)
+
+(defwidget windows []
+    (box :spacing 0
+        :orientation "horizontal"
+        :space-evenly false
+        (label :text "${active_workspace}${active_window}${var_windows}" :visible false)
+        (for window in var_windows
+            (eventbox :onclick "hyprctl dispatch focuswindow 'address:${window.address}'"
+                (box :visible "${window.wid == active_workspace}"
+                    (label :text "${window.class}"
+                        :class "window-entry ${window.address == active_window ? "active" : "inactive"}"
+                    )
+                )
+            )
+        )
+    )
+)
+
+
+;; (defwidget metric [label value onchange]
+;;     (box :orientation "h"
+;;          :class "metric"
+;;          :space-evenly false
+;;     (box :class "label" label)
+;;     (scale :min 0
+;;            :max 101
+;;            :active {onchange != ""}
+;;            :value value
+;;            :onchange onchange)))
+;;
+
+
+(defpoll time :interval "10s"
+  "date '+%H:%M %b %d, %Y'")
+
