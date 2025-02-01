@@ -28,12 +28,7 @@
     margin-right: 20px;
 }
 
-.label-ram {
-    font-size: large;
-}
-
 .workspace-entry {
-    border-radius: 6px;
     margin-left: 2px;
     margin-top: 0px;
     padding-left: 5px;
@@ -43,11 +38,13 @@
 }
 
 .workspace-entry.active {
-    background-color: #f34b26;
+    color: #000000;
+    background-color: #ffffff;
 }
 
 .workspace-entry.inactive {
-    background-color: #145252;
+    color: #c8c8c8;
+    background-color: #484848;
 }
 
 .workspace-entry.magic {
@@ -55,7 +52,6 @@
 }
 
 .window-entry {
-    border-radius: 6px;
     margin-left: 2px;
     margin-top: 0px;
     padding-left: 5px;
@@ -65,9 +61,11 @@
 }
 
 .window-entry.active {
-    background-color: #f34b26;
+    color: #000000;
+    background-color: #ffffff;
 }
 
 .window-entry.inactive {
-    background-color: #145252;
+    color: #c8c8c8;
+    background-color: #484848;
 }

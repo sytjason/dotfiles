@@ -23,7 +23,7 @@
             :orientation "horizontal"
             :icon-size 20
         )
-        time
+        (time)
     )
 )
     ;; (metric :label "🔊"
@@ -92,6 +92,10 @@
 ;;
 
 
-(defpoll time :interval "10s"
-  "date '+%H:%M %b %d, %Y'")
+(defwidget time []
+    (image :path "/home/jason/clock/clock.svg"
+           :preserve-aspect-ratio true
+           :image-width 20
+    )
+)
 
