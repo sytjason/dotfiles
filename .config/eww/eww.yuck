@@ -37,12 +37,12 @@
     ;;         :onchange "")
     ;; time))
 
-(deflisten var_workspaces :initial "[]"   "bash scripts/get-workspaces.sh")
-(deflisten active_workspace :initial "0"  "bash scripts/get-active-workspace.sh")
-(deflisten special_workspace :initial "0" "bash scripts/get-special-workspace.sh")
-(deflisten var_windows :initial "[]"      "bash scripts/get-windows.sh")
-(deflisten active_window :initial "null"  "bash scripts/get-active-window.sh")
-(deflisten time :initial "0-0"            "bash scripts/get-time.sh")
+(deflisten var_workspaces    :initial "[]"   "bash scripts/get-workspaces.sh")
+(deflisten active_workspace  :initial "0"    "bash scripts/get-active-workspace.sh")
+(deflisten special_workspace :initial "0"    "bash scripts/get-special-workspace.sh")
+(deflisten var_windows       :initial "[]"   "bash scripts/get-windows.sh")
+(deflisten active_window     :initial "null" "bash scripts/get-active-window.sh")
+(defpoll time :interval "1m" :initial "0-0"  "bash scripts/get-time.sh")
 
 (defwidget workspaces []
     (box :spacing 0
