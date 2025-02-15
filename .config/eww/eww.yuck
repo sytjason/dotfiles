@@ -37,11 +37,12 @@
     ;;         :onchange "")
     ;; time))
 
-(deflisten var_workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces.sh")
-(deflisten active_workspace :initial "0" "bash ~/.config/eww/scripts/get-active-workspace.sh")
-(deflisten special_workspace :initial "0" "bash ~/.config/eww/scripts/get-special-workspace.sh")
-(deflisten var_windows :initial "[]" "bash ~/.config/eww/scripts/get-windows.sh")
-(deflisten active_window :initial "null" "bash ~/.config/eww/scripts/get-active-window.sh")
+(deflisten var_workspaces :initial "[]"   "bash scripts/get-workspaces.sh")
+(deflisten active_workspace :initial "0"  "bash scripts/get-active-workspace.sh")
+(deflisten special_workspace :initial "0" "bash scripts/get-special-workspace.sh")
+(deflisten var_windows :initial "[]"      "bash scripts/get-windows.sh")
+(deflisten active_window :initial "null"  "bash scripts/get-active-window.sh")
+(deflisten time :initial "0-0"            "bash scripts/get-time.sh")
 
 (defwidget workspaces []
     (box :spacing 0
@@ -93,9 +94,12 @@
 
 
 (defwidget time []
-    (image :path "/home/jason/clock/clock.svg"
+    (box
+        (label :text "${time}" :visible false)
+        (image :path "clock/${time}.svg"
            :preserve-aspect-ratio true
            :image-width 20
+        )
     )
 )
 
