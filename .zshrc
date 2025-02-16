@@ -7,12 +7,11 @@ fi
 
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.trace-cmd/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin/:$PATH
-#export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/.gem/ruby/2.7.0/bin:$PATH
+export PATH=/var/lib/snapd/snap/bin:$PATH
 export EDITOR='vim'
 
 # Path to your oh-my-zsh installation.
