@@ -18,31 +18,25 @@
 
 
 (defwidget sidestuff []
-    (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+    (box :class "sidestuff"
+         :orientation "h"
+         :space-evenly false
+         :halign "end"
         (systray :spacing 1
-            :orientation "horizontal"
-            :icon-size 20
+                 :orientation "horizontal"
+                 :icon-size 20
         )
         (time)
     )
 )
-    ;; (metric :label "🔊"
-    ;;         :value volume
-    ;;         :onchange "amixer -D pulse sset Master {}%")
-    ;; (metric :label ""
-    ;;         :value {EWW_RAM.used_mem_perc}
-    ;;         :onchange "")
-    ;; (metric :label "💾"
-    ;;         :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
-    ;;         :onchange "")
-    ;; time))
 
 (deflisten var_workspaces    :initial "[]"   "bash scripts/get-workspaces.sh")
 (deflisten active_workspace  :initial "0"    "bash scripts/get-active-workspace.sh")
 (deflisten special_workspace :initial "0"    "bash scripts/get-special-workspace.sh")
 (deflisten var_windows       :initial "[]"   "bash scripts/get-windows.sh")
 (deflisten active_window     :initial "null" "bash scripts/get-active-window.sh")
-(defpoll time :interval "1m" :initial "0-0"  "bash scripts/get-time.sh")
+
+(defpoll cur_time :interval "1m" :initial "0-0"  "bash scripts/get-time.sh time")
 
 (defwidget workspaces []
     (box :spacing 0
@@ -92,13 +86,24 @@
 ;;            :onchange onchange)))
 ;;
 
-
+(defvar hov_time false)
+(defvar datetime "")
 (defwidget time []
-    (box
-        (label :text "${time}" :visible false)
-        (image :path "clock/${time}.svg"
-           :preserve-aspect-ratio true
-           :image-width 20
+    (eventbox :onhover     "eww update hov_time=true datetime=\"$(scripts/get-time.sh all)\""
+              :onhoverlost "eww update hov_time=false"
+        (box :space-evenly false
+            (label :text "${cur_time}" :visible false)
+            (image :path "clock/${cur_time}.svg"
+                   :preserve-aspect-ratio true
+                   :image-width 20
+            )
+            (revealer :transition "slideleft"
+                      :reveal hov_time
+                      :duration "250ms"
+                (box 
+                    (label :text "${datetime}")
+                )
+            )
         )
     )
 )
