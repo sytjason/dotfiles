@@ -1,5 +1,6 @@
 #!/bin/bash
-EWW=$HOME/.local/bin/eww
+
+EWW=$(which eww)
 
 # Wait for the Wayland display to be available
 echo starting eww...
@@ -10,6 +11,4 @@ done
 echo wayland display found: $WAYLAND_DISPLAY!
 
 # Start eww
-$EWW daemon
-$EWW open mywindow --screen 0
-
+$EWW --debug daemon && $EWW open mywindow
