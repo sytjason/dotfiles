@@ -22,10 +22,12 @@
          :orientation "h"
          :space-evenly false
          :halign "end"
-        (systray :spacing 1
+         :spacing 5
+        (systray :spacing 5
                  :orientation "horizontal"
                  :icon-size 20
         )
+        (battery)
         (time)
     )
 )
@@ -35,8 +37,8 @@
 (deflisten special_workspace :initial "0"    "bash scripts/get-special-workspace.sh")
 (deflisten var_windows       :initial "[]"   "bash scripts/get-windows.sh")
 (deflisten active_window     :initial "null" "bash scripts/get-active-window.sh")
-
-(defpoll cur_time :interval "1m" :initial "0-0"  "bash scripts/get-time.sh time")
+(defpoll cur_time    :interval "1m" :initial "0-0" "bash scripts/get-time.sh time")
+(defpoll bat_percent :interval "1m" :initial "0"   "bash scripts/get-bat.sh percent")
 
 (defwidget workspaces []
     (box :spacing 0
@@ -86,6 +88,29 @@
 ;;            :onchange onchange)))
 ;;
 
+(defvar hov_bat false)
+(defvar bat_detail "")
+(defwidget battery []
+    (eventbox :onhover     "eww update hov_bat=true bat_detail=\"$(scripts/get-bat.sh all)\""
+              :onhoverlost "eww update hov_bat=false"
+        (box :space-evenly false
+             :margin-left 10
+            (label :text "${bat_percent}" :visible false)
+            (image :path "battery/${bat_percent}.svg"
+                   :preserve-aspect-ratio true
+                   :image-width 25
+            )
+            (revealer :transition "slideleft"
+                      :reveal hov_bat
+                      :duration "250ms"
+                (box
+                    (label :text "${bat_detail}")
+                )
+            )
+        )
+    )
+)
+
 (defvar hov_time false)
 (defvar datetime "")
 (defwidget time []
@@ -100,7 +125,7 @@
             (revealer :transition "slideleft"
                       :reveal hov_time
                       :duration "250ms"
-                (box 
+                (box
                     (label :text "${datetime}")
                 )
             )
