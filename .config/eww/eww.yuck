@@ -29,6 +29,7 @@
         )
         (battery)
         (time)
+        (record)
     )
 )
 
@@ -133,3 +134,20 @@
     )
 )
 
+(defvar show_rec false)
+(defvar blink_rec true)
+(defwidget record []
+    (revealer :transition "none"
+              :reveal show_rec
+        (box :width 20
+            (revealer :transition "crossfade"
+                      :reveal blink_rec
+                      :duration "250ms"
+                (image :path "record/rec.svg"
+                       :preserve-aspect-ratio true
+                       :image-width 20
+                )
+            )
+        )
+    )
+)
