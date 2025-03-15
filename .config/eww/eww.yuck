@@ -27,6 +27,7 @@
                  :orientation "horizontal"
                  :icon-size 20
         )
+        (network)
         (battery)
         (time)
         (record)
@@ -88,6 +89,15 @@
 ;;            :value value
 ;;            :onchange onchange)))
 ;;
+
+(defwidget network []
+    (box :space-evenly false
+        (image :path "network/wifi.svg"
+               :preserve-aspect-ratio true
+               :image-width 20
+        )
+    )
+)
 
 (defvar hov_bat false)
 (defvar bat_detail "")
