@@ -39,6 +39,8 @@
 (deflisten special_workspace :initial "0"    "bash scripts/get-special-workspace.sh")
 (deflisten var_windows       :initial "[]"   "bash scripts/get-windows.sh")
 (deflisten active_window     :initial "null" "bash scripts/get-active-window.sh")
+(deflisten conn_type         :initial ""     "bash scripts/get-conn-type.sh")
+
 (defpoll cur_time    :interval "1m" :initial "0-0" "bash scripts/get-time.sh time")
 (defpoll bat_percent :interval "1m" :initial "0"   "bash scripts/get-bat.sh percent")
 
@@ -92,7 +94,7 @@
 
 (defwidget network []
     (box :space-evenly false
-        (image :path "network/wifi.svg"
+        (image :path "network/${conn_type}.svg"
                :preserve-aspect-ratio true
                :image-width 20
         )
