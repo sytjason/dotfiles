@@ -23,4 +23,10 @@ active_window() {
     jq -r ".address" <<< $active_window
 }
 
+get_active_net_interfaces() {
+    while read -r line; do
+        intf=$(awk '{print $2}' <<< $line)
+        echo $intf
+    done <<< $(ip -4 -o addr show up | grep -v -e " lo " -e "docker*")
+}
 

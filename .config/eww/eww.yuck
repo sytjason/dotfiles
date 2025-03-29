@@ -7,7 +7,6 @@
 )
 
 (defwindow mywindow
-    :monitor 0
     :geometry (geometry :x "0%"
                         :y "0%"
                         :width "100%"
@@ -40,6 +39,7 @@
 (deflisten var_windows       :initial "[]"   "bash scripts/get-windows.sh")
 (deflisten active_window     :initial "null" "bash scripts/get-active-window.sh")
 (deflisten conn_type         :initial ""     "bash scripts/get-conn-type.sh")
+(deflisten net_state         :initial ""     "bash scripts/get-net-status.sh start")
 
 (defpoll cur_time    :interval "1m" :initial "0-0" "bash scripts/get-time.sh time")
 (defpoll bat_percent :interval "1m" :initial "0"   "bash scripts/get-bat.sh percent")
@@ -92,11 +92,23 @@
 ;;            :onchange onchange)))
 ;;
 
+(defvar hov_net false)
 (defwidget network []
-    (box :space-evenly false
-        (image :path "network/${conn_type}.svg"
-               :preserve-aspect-ratio true
-               :image-width 20
+    (eventbox :onclick "bash scripts/start-netconfigure.sh"
+              :onhover     "eww update hov_net=true"
+              :onhoverlost "eww update hov_net=false"
+        (box :space-evenly false
+            (image :path "network/${conn_type}.svg"
+                   :preserve-aspect-ratio true
+                   :image-width 20
+            )
+            (revealer :transition "slideleft"
+                      :reveal "${hov_net && conn_type != "offline"}"
+                      :duration "250ms"
+                (box
+                    (label :text "${net_state}")
+                )
+            )
         )
     )
 )
