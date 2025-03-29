@@ -30,3 +30,6 @@ get_active_net_interfaces() {
     done <<< $(ip -4 -o addr show up | grep -v -e " lo " -e "docker*")
 }
 
+get_timestamp_ms() {
+    date +%s%3N
+}

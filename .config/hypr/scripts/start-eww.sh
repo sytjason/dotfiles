@@ -2,13 +2,17 @@
 
 EWW=$(which eww)
 
-# Wait for the Wayland display to be available
-echo starting eww...
-while [ -z "$WAYLAND_DISPLAY" ]; do
-    echo waiting for wayland display...
-    sleep 1
-done
-echo wayland display found: $WAYLAND_DISPLAY!
+if pgrep eww > /dev/null 2>&1; then
+    $EWW kill
+fi
+
+monitors=$(hyprctl monitors -j | jq '.[] | .id')
+# monitors=$(hyprctl monitors -j | jq '.[] | .id' | wc -l)
 
 # Start eww
-$EWW --debug daemon && $EWW open mywindow
+$EWW daemon
+
+while read -r monitor; do
+    eww open mywindow --screen $monitor
+done <<< $monitors
+
