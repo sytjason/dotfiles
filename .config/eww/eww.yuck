@@ -26,6 +26,7 @@
                  :orientation "horizontal"
                  :icon-size 20
         )
+        (volume)
         (network)
         (battery)
         (time)
@@ -33,13 +34,14 @@
     )
 )
 
-(deflisten var_workspaces    :initial "[]"   "bash scripts/get-workspaces.sh")
-(deflisten active_workspace  :initial "0"    "bash scripts/get-active-workspace.sh")
-(deflisten special_workspace :initial "0"    "bash scripts/get-special-workspace.sh")
-(deflisten var_windows       :initial "[]"   "bash scripts/get-windows.sh")
-(deflisten active_window     :initial "null" "bash scripts/get-active-window.sh")
-(deflisten conn_type         :initial ""     "bash scripts/get-conn-type.sh")
-(deflisten net_state         :initial ""     "bash scripts/get-net-status.sh start")
+(deflisten var_workspaces        :initial "[]"   "bash scripts/get-workspaces.sh")
+(deflisten active_workspace      :initial "0"    "bash scripts/get-active-workspace.sh")
+(deflisten special_workspace     :initial "0"    "bash scripts/get-special-workspace.sh")
+(deflisten var_windows           :initial "[]"   "bash scripts/get-windows.sh")
+(deflisten active_window         :initial "null" "bash scripts/get-active-window.sh")
+(deflisten conn_type             :initial ""     "bash scripts/get-conn-type.sh")
+(deflisten net_state             :initial ""     "bash scripts/get-net-status.sh start")
+(deflisten var_volume            :initial "0"    "bash scripts/get-volume.sh")
 
 (defpoll cur_time    :interval "1m" :initial "0-0" "bash scripts/get-time.sh time")
 (defpoll bat_percent :interval "1m" :initial "0"   "bash scripts/get-bat.sh percent")
@@ -78,19 +80,6 @@
         )
     )
 )
-
-
-;; (defwidget metric [label value onchange]
-;;     (box :orientation "h"
-;;          :class "metric"
-;;          :space-evenly false
-;;     (box :class "label" label)
-;;     (scale :min 0
-;;            :max 101
-;;            :active {onchange != ""}
-;;            :value value
-;;            :onchange onchange)))
-;;
 
 (defvar hov_net false)
 (defwidget network []
@@ -172,6 +161,16 @@
                        :image-width 20
                 )
             )
+        )
+    )
+)
+
+(defwidget volume []
+    (box :width 20
+        (label :text "${var_volume}" :visible false)
+        (image :path "volume/volume-${var_volume == 0 ? "no" : var_volume > 0 && var_volume < 50 ? "low" : "high"}.svg"
+               :preserve-aspect-ratio true
+               :image-width 20
         )
     )
 )
