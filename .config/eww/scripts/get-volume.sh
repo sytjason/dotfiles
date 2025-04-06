@@ -1,6 +1,8 @@
 #!/bin/bash
 
 LAST_VOLUME=$(pamixer --get-volume)
+IS_MUTE=$(pamixer --get-mute)
+echo "{\"volume\": $LAST_VOLUME, \"mute\": $IS_MUTE}"
 pactl subscribe | grep --line-buffered sink |
 while read -r _; do
     NEW_VOLUME=$(pamixer --get-volume)
