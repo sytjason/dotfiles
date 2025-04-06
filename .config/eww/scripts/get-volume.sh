@@ -10,11 +10,11 @@ while read -r _; do
     echo "{\"volume\": $NEW_VOLUME, \"mute\": $IS_MUTE}"
     DIFF=$((NEW_VOLUME - LAST_VOLUME))
     if [[ $NEW_VOLUME -eq 0 ]] || $IS_MUTE; then
-        notify-send "Volume: mute" -t 1000 -i $HOME/.config/eww/volume/volume-no.svg
+        notify-send "Volume" "mute" -t 1000 -i $HOME/.config/eww/volume/volume-no.svg
     elif [[ $DIFF -gt 0 ]]; then
-        notify-send "Volume: $NEW_VOLUME%" -t 1000 -i $HOME/.config/eww/volume/volume-up.svg
+        notify-send "Volume" "$NEW_VOLUME%" -t 1000 -i $HOME/.config/eww/volume/volume-up.svg
     elif [[ $DIFF -lt 0 ]]; then
-        notify-send "Volume: $NEW_VOLUME%" -t 1000 -i $HOME/.config/eww/volume/volume-down.svg
+        notify-send "Volume" "$NEW_VOLUME%" -t 1000 -i $HOME/.config/eww/volume/volume-down.svg
     fi
     LAST_VOLUME=$NEW_VOLUME
 done

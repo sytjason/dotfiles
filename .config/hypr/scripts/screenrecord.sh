@@ -1,7 +1,7 @@
 #!/bin/bash
 
 notif_and_blink() {
-    notify-send "Recording started"
+    notify-send -t 1000 -i $HOME/.config/eww/record/rec.svg "Screen Record" "started"
     eww update show_rec=true
     while true; do
         sleep 0.5
@@ -17,7 +17,7 @@ if [ "$(pgrep wf-recorder)" = "" ]; then
     wf-recorder -g "$region" -f $HOME/Videos/recording-$(date +%G-%m-%d-%H%M%S).mkv
     exit 0
 else
-    notify-send "Recording stopped"
+    notify-send -t 1000 -i $HOME/.config/eww/record/rec.svg "Screen Record" "stopped"
     eww update show_rec=false
     killall wf-recorder
 fi
