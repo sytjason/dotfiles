@@ -166,11 +166,13 @@
 )
 
 (defwidget volume []
-    (box :width 20
-        (label :text "${var_volume}" :visible false)
-        (image :path "volume/volume-${(var_volume.volume == 0 || var_volume.mute) ? "no" : var_volume.volume > 0 && var_volume.volume < 50 ? "low" : "high"}.svg"
-               :preserve-aspect-ratio true
-               :image-width 20
+    (eventbox :onclick "bash scripts/start-volume-settings.sh"
+        (box :width 20
+            (label :text "${var_volume}" :visible false)
+            (image :path "volume/volume-${(var_volume.volume == 0 || var_volume.mute) ? "no" : var_volume.volume > 0 && var_volume.volume < 50 ? "low" : "high"}.svg"
+                   :preserve-aspect-ratio true
+                   :image-width 20
+            )
         )
     )
 )
