@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+import math
+
+def draw(percentage):
+    val_degree = percentage * 180 / 100
+    svg = f"""
+<svg id="speedometer" width="180" height="110" viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+  <!-- Arc -->
+  <path d="M 30 100 A 70 70 0 0 1 170 100" fill="none" stroke="white" stroke-width="10"/>
+
+  <!-- Filled Circular Sector -->
+  <path d="
+    M 100 100
+    L 30 100
+    A 70 70 0 0 1 {100 - 70 * math.cos(math.radians(val_degree))} {100 - 70 * math.sin(math.radians(val_degree))}
+    Z
+  " fill="white"/>
+
+  <!-- Ticks -->
+  <g stroke="white" stroke-width="2">
+    <!-- 0 -->
+    <line x1="25" y1="100" x2="40" y2="100"/>
+    <!-- 50 -->
+    <line x1="100" y1="30" x2="100" y2="40"/>
+    <!-- 100 -->
+    <line x1="175" y1="100" x2="160" y2="100"/>
+  </g>
+
+  <!-- Center Circle -->
+  <circle cx="100" cy="100" r="5" fill="white"/>
+</svg>
+    """
+    return svg
+
+
+def generate(percentage):
+    svg = draw(percentage)
+    with open(f"{percentage}.svg", "w") as f:
+        f.write(svg)
+
+
+if __name__ == "__main__":
+    for i in range(0, 101):
+        generate(i)

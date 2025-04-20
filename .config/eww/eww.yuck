@@ -26,6 +26,7 @@
                  :orientation "horizontal"
                  :icon-size 20
         )
+        (cpu)
         (volume)
         (network)
         (battery)
@@ -45,6 +46,7 @@
 
 (defpoll cur_time    :interval "1m" :initial "0-0" "bash scripts/get-time.sh time")
 (defpoll bat_percent :interval "1m" :initial "0"   "bash scripts/get-bat.sh percent")
+
 
 (defwidget workspaces []
     (box :spacing 0
@@ -172,6 +174,30 @@
             (image :path "volume/volume-${(var_volume.volume == 0 || var_volume.mute) ? "no" : var_volume.volume > 0 && var_volume.volume < 50 ? "low" : "high"}.svg"
                    :preserve-aspect-ratio true
                    :image-width 20
+            )
+        )
+    )
+)
+
+(defvar hov_cpu false)
+(defvar temperature 0)
+(defwidget cpu []
+    (eventbox :onhover "eww update hov_cpu=true temperature=\"$(scripts/get-temperature.sh)\""
+              :onhoverlost "eww update hov_cpu=false"
+        (box :space-evenly false
+             :margin-left 10
+            (image :path "cpu/${round(EWW_CPU.avg,0)}.svg"
+                   :preserve-aspect-ratio true
+                   :image-width 20
+            )
+            (revealer :transition "slideleft"
+                      :reveal hov_cpu
+                      :duration "250ms"
+                (box :space-evenly false
+                    (label :text "CPU: ${round(EWW_CPU.avg, 0)}%|")
+                    (label :text "MEM: ${round(EWW_RAM.used_mem/1073741824, 1)}G|")
+                    (label :text "TEMP: ${temperature}°C")
+                )
             )
         )
     )
